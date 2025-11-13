@@ -18,9 +18,6 @@ const MovieDetailScreen = ({ route }) => {
   const { user } = useAuth();
   const userId = user?.uid;
 
-  // (Funções useMemo, useEffect, handleToggleSave
-  //  permanecem as mesmas da última vez)
-  // ... (useMemo, useEffect, handleToggleSave) ...
   const movieDocRef = useMemo(() => {
     if (userId && movie?.id) {
       return doc(db, 'users', userId, 'watched_movies', movie.id.toString());
@@ -94,7 +91,6 @@ const MovieDetailScreen = ({ route }) => {
   };
 
 
-  // Renderização do botão de salvar
   const renderSaveButton = () => {
     if (isChecking) {
       return <ActivityIndicator size="small" color="#007bff" style={styles.buttonSpacer} accessibilityLabel="A verificar se o filme está salvo" />;
@@ -112,7 +108,6 @@ const MovieDetailScreen = ({ route }) => {
           title={buttonTitle}
           onPress={handleToggleSave}
           color={isSaved ? "#E53935" : "#007bff"}
-          // RF07: Label do botão muda dinamicamente
           accessibilityLabel={isSaved ? "Botão Remover da Lista" : `Botão Salvar com Nota ${userRating} de 10`}
           disabled={!isSaved && userRating === 0} 
         />
@@ -126,7 +121,6 @@ const MovieDetailScreen = ({ route }) => {
         <Image
           style={styles.poster}
           source={{ uri: `${IMAGE_BASE_URL}${movie.poster_path}` }}
-          // RF07: Label da imagem
           accessibilityRole="image"
           accessibilityLabel={`Poster do filme ${movie.title}`}
         />
@@ -134,25 +128,22 @@ const MovieDetailScreen = ({ route }) => {
         <View style={styles.contentContainer}>
           <Text style={styles.title} accessible={true}>{movie.title}</Text>
           
-          {/* RF04 - Secção de Avaliação do Utilizador */}
           <Text style={styles.ratingTitle} accessible={true}>Minha Avaliação</Text>
           <View 
             style={styles.ratingContainer}
-            // RF07: Label para o componente de estrelas
             accessible={true}
             accessibilityLabel={`Minha avaliação atual: ${userRating} de 10 estrelas. Pressione para avaliar.`}
           >
             <Rating
               type='star'
-              ratingCount={10} // Escala de 1 a 10
+              ratingCount={10}
               imageSize={30}
-              startingValue={userRating} // Começa com a nota salva
-              onFinishRating={(rating) => setUserRating(rating)} // Atualiza o estado da nota
-              tintColor='#f5f5f5' // Cor de fundo do ecrã de detalhes
+              startingValue={userRating}
+              onFinishRating={(rating) => setUserRating(rating)}
+              tintColor='#f5f5f5'
             />
           </View>
           
-          {/* Botão de Salvar (RF05) */}
           {renderSaveButton()}
           
           <View style={styles.infoContainer}>
@@ -201,13 +192,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     alignItems: 'flex-start', 
     marginBottom: 10,
-    // RF07: Garantir alvo de toque mínimo
     minHeight: 44,
     justifyContent: 'center'
   },
   buttonSpacer: {
     marginVertical: 20, 
-    minHeight: 44, // RF07
+    minHeight: 44,
     justifyContent: 'center'
   },
   infoContainer: {
@@ -220,7 +210,7 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     alignItems: 'center',
-    minHeight: 44, // RF07
+    minHeight: 44,
   },
   infoText: {
     fontSize: 16,

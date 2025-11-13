@@ -18,7 +18,6 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* RF07: accessible={true} faz o leitor ler como um bloco */}
       <Text style={styles.title} accessible={true}>Rate My Movie</Text>
       
       <TextInput
@@ -28,7 +27,6 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
-        // RF07: Labels descritivos para formulários
         accessibilityLabel="Campo de e-mail"
         accessibilityHint="Insira o seu e-mail de cadastro"
       />
@@ -38,7 +36,6 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        // RF07: Labels descritivos para formulários
         accessibilityLabel="Campo de senha"
         accessibilityHint="Insira a sua senha"
       />
@@ -50,7 +47,6 @@ const LoginScreen = ({ navigation }) => {
       />
       <TouchableOpacity 
         onPress={() => navigation.navigate('Register')}
-        // RF07: Labels descritivos para links
         accessibilityRole="link"
         accessibilityLabel="Ir para o cadastro"
         accessibilityHint="Pressione se ainda não tem uma conta"
@@ -66,7 +62,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#f5f5f5' },
   title: { fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 30 },
   input: {
-    height: 50, // RF07 - Alvo de toque (mínimo 44)
+    height: 50, 
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 8,
@@ -78,8 +74,8 @@ const styles = StyleSheet.create({
     color: '#007bff', 
     textAlign: 'center', 
     marginTop: 20,
-    fontSize: 16, // RF07 - Alvo de toque
-    padding: 10,  // RF07 - Alvo de toque
+    fontSize: 16,
+    padding: 10, 
   },
 });
 

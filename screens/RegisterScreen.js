@@ -7,18 +7,13 @@ import { auth, db, storage } from '../firebaseConfig';
 import * as ImagePicker from 'expo-image-picker';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-// RF01 - Tela de Cadastro (Versão Final)
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [imageUri, setImageUri] = useState(null);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
-  // (Funções pickImage, takePhoto, uploadImage, handleRegister
-  //  permanecem as mesmas da última vez)
-  // ... (pickImage, takePhoto, uploadImage, handleRegister) ...
-  // RF01 - Função para escolher imagem da galeria
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -36,7 +31,6 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // RF01 - Função para tirar foto com a câmara
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
@@ -53,42 +47,37 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // Função para fazer o upload da imagem para o Firebase Storage
   const uploadImage = async (uri, uid) => {
     try {
       const response = await fetch(uri);
       const blob = await response.blob();
       const storageRef = ref(storage, `profile_pics/${uid}`);
       const uploadTask = uploadBytesResumable(storageRef, blob);
-      await uploadTask; // Espera o upload
-      return await getDownloadURL(uploadTask.snapshot.ref); // Retorna o URL
+      await uploadTask;
+      return await getDownloadURL(uploadTask.snapshot.ref);
     } catch (e) {
       console.error("Erro ao fazer upload da imagem: ", e);
       throw new Error("Não foi possível fazer o upload da foto de perfil.");
     }
   };
 
-  // Função de Registro ATUALIZADA
   const handleRegister = async () => {
     setLoading(true);
     let profilePicUrl = null; 
 
     try {
-      // 1. Criar o usuário no Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Se o utilizador escolheu uma imagem, faz o upload AGORA
       if (imageUri) {
         Alert.alert("Aguarde", "A criar conta e a fazer upload da sua foto...");
         profilePicUrl = await uploadImage(imageUri, user.uid);
       }
 
-      // 3. Salvar dados (nome, email e URL da foto) no Firestore
       await setDoc(doc(db, 'users', user.uid), {
         name: name,
         email: email,
-        profilePicUrl: profilePicUrl, // Salva o URL (ou nulo)
+        profilePicUrl: profilePicUrl,
       });
     } catch (error) {
       Alert.alert("Erro no Cadastro", error.message);
@@ -102,7 +91,6 @@ const RegisterScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title} accessible={true}>Criar Conta</Text>
 
-      {/* RF07: Label para a imagem e o texto */}
       <TouchableOpacity 
         onPress={pickImage} 
         accessibilityRole="button"
@@ -112,7 +100,6 @@ const RegisterScreen = ({ navigation }) => {
         <Image
           style={styles.profilePic}
           source={{ uri: imageUri || 'https://placehold.co/150x150/007bff/white?text=Perfil' }}
-          // RF07: Texto alternativo para a imagem
           accessibilityLabel={imageUri ? "Foto de perfil selecionada" : "Placeholder de foto de perfil"}
         />
         <Text style={styles.changePicText}>Escolher (Galeria)</Text>
@@ -180,7 +167,6 @@ const RegisterScreen = ({ navigation }) => {
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#f5f5f5' },
   title: { fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
@@ -195,15 +181,15 @@ const styles = StyleSheet.create({
     color: '#007bff',
     textAlign: 'center',
     marginVertical: 10, 
-    fontSize: 16, // RF07
-    padding: 5,  // RF07
+    fontSize: 16,
+    padding: 5,  
   },
   buttonContainer: {
     width: '100%',
     marginVertical: 5,
   },
   input: {
-    height: 50, // RF07
+    height: 50, 
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 8,
@@ -215,8 +201,8 @@ const styles = StyleSheet.create({
     color: '#007bff', 
     textAlign: 'center', 
     marginTop: 20,
-    fontSize: 16, // RF07
-    padding: 10,  // RF07
+    fontSize: 16,
+    padding: 10, 
   },
 });
 

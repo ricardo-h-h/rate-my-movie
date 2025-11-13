@@ -12,10 +12,6 @@ const ProfileScreen = () => {
   const { user, userData } = useAuth(); 
   const [loading, setLoading] = useState(false);
 
-  // (Funções pickImage, takePhoto, uploadImage, handleLogout
-  //  permanecem as mesmas da última vez)
-  // ... (pickImage, takePhoto, uploadImage, handleLogout) ...
-  // RF01 - Função para escolher imagem da galeria
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -33,7 +29,6 @@ const ProfileScreen = () => {
     }
   };
 
-  // RF01 - Função para tirar foto com a câmara
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
@@ -51,7 +46,6 @@ const ProfileScreen = () => {
   };
 
 
-  // Função para fazer o upload da imagem para o Firebase Storage
   const uploadImage = async (uri) => {
     if (!user) return;
     setLoading(true);
@@ -82,7 +76,6 @@ const ProfileScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       
-      {/* RF07: Label para a imagem */}
       <TouchableOpacity 
         onPress={pickImage} 
         accessibilityRole="button"
@@ -92,16 +85,13 @@ const ProfileScreen = () => {
         <Image
           style={styles.profilePic}
           source={{ uri: userData?.profilePicUrl || 'https://placehold.co/150x150/007bff/white?text=Perfil' }}
-          // RF07: Texto alternativo para a imagem
           accessibilityLabel={`Foto de perfil de ${userData?.name || 'utilizador'}`}
         />
         <Text style={styles.changePicText}>Mudar Foto (Galeria)</Text>
       </TouchableOpacity>
 
-      {/* RF07: Label para o loading */}
       {loading && <ActivityIndicator size="large" color="#007bff" style={{ marginVertical: 10 }} accessibilityLabel="A carregar" />}
 
-      {/* RF07: Torna o nome acessível */}
       <Text style={styles.name} accessible={true}>Olá, {userData?.name}</Text>
       <Text style={styles.email} accessible={true}>Email: {userData?.email}</Text>
       
@@ -130,7 +120,6 @@ const ProfileScreen = () => {
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
@@ -151,8 +140,8 @@ const styles = StyleSheet.create({
     color: '#007bff',
     textAlign: 'center',
     marginBottom: 20,
-    fontSize: 16, // RF07
-    padding: 5,  // RF07
+    fontSize: 16,
+    padding: 5,  
   },
   name: { 
     fontSize: 24, 

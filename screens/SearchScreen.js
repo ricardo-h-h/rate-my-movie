@@ -4,15 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { API_KEY, API_BASE_URL, IMAGE_BASE_URL } from '../apiConfig'; 
 import { Ionicons } from '@expo/vector-icons';
 
-// RF03 - Tela de Busca de Filmes
 const SearchScreen = ({ navigation }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // (Função handleSearch permanece a mesma)
-  // ... (handleSearch) ...
   const handleSearch = async () => {
     if (query.trim() === '') {
       setResults([]);
@@ -36,13 +33,10 @@ const SearchScreen = ({ navigation }) => {
     }
   };
 
-  // Componente que renderiza cada item na lista
   const renderMovieItem = ({ item }) => (
-    // RF04 - Navegação para Detalhes
     <TouchableOpacity 
       style={styles.itemContainer} 
       onPress={() => navigation.navigate('MovieDetails', { movie: item })}
-      // RF07: Label descritivo para o item da lista
       accessibilityRole="button"
       accessibilityLabel={`Ver detalhes de ${item.title}`}
       accessibilityHint={`Lançado em ${item.release_date || 'N/A'}. Nota ${item.vote_average.toFixed(1)}`}
@@ -50,7 +44,6 @@ const SearchScreen = ({ navigation }) => {
       <Image
         style={styles.poster}
         source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
-        // RF07 - Imagens com alternativa
         accessibilityRole="image"
         accessibilityLabel={`Poster do filme ${item.title}`}
       />
@@ -77,7 +70,6 @@ const SearchScreen = ({ navigation }) => {
           onChangeText={setQuery}
           onSubmitEditing={handleSearch} 
           returnKeyType="search"
-          // RF07: Labels para o input
           accessibilityLabel="Campo de busca de filmes"
           accessibilityHint="Insira o nome do filme que deseja buscar"
         />
@@ -108,7 +100,6 @@ const SearchScreen = ({ navigation }) => {
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   searchContainer: {
@@ -119,7 +110,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 44, // RF07
+    height: 44,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 8,
@@ -154,7 +145,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     alignItems: 'center',
-    minHeight: 44, // RF07
+    minHeight: 44,
   },
   poster: {
     width: 80,

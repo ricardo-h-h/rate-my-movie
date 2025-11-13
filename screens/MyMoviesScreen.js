@@ -7,7 +7,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { IMAGE_BASE_URL } from '../apiConfig';
 import { Ionicons } from '@expo/vector-icons';
 
-// RF05 - Tela "Meus Filmes Assistidos"
 const MyMoviesScreen = ({ navigation }) => {
   const [savedMovies, setSavedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,8 +14,6 @@ const MyMoviesScreen = ({ navigation }) => {
   const { user } = useAuth(); 
   const userId = user?.uid; 
 
-  // (useEffect permanece o mesmo)
-  // ... (useEffect) ...
   useEffect(() => {
     if (!userId) {
       setLoading(false);
@@ -36,12 +33,10 @@ const MyMoviesScreen = ({ navigation }) => {
     return () => unsubscribe();
   }, [userId]); 
 
-  // Componente de item atualizado para mostrar a nota do utilizador
   const renderMovieItem = ({ item }) => (
     <TouchableOpacity 
       style={styles.itemContainer} 
       onPress={() => navigation.navigate('MovieDetails', { movie: item })}
-      // RF07: Label descritivo
       accessibilityRole="button"
       accessibilityLabel={`Ver detalhes de ${item.title}`}
       accessibilityHint={`Sua nota: ${item.userRating || 'não avaliado'} de 10`}
@@ -49,7 +44,6 @@ const MyMoviesScreen = ({ navigation }) => {
       <Image
         style={styles.poster}
         source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
-        // RF07: Texto alternativo
         accessibilityRole="image"
         accessibilityLabel={`Poster do filme ${item.title}`}
       />
@@ -61,7 +55,6 @@ const MyMoviesScreen = ({ navigation }) => {
         
         {item.userRating > 0 ? (
           <View style={styles.userRatingContainer} 
-            // RF07: Label para a nota
             accessible={true} 
             accessibilityLabel={`Sua nota: ${item.userRating} de 10`}
           >
@@ -94,7 +87,6 @@ const MyMoviesScreen = ({ navigation }) => {
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   centered: {
@@ -115,7 +107,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     alignItems: 'center',
-    minHeight: 44, // RF07
+    minHeight: 44, 
   },
   poster: {
     width: 80,
